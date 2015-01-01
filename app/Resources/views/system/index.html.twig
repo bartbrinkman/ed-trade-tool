@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div>
+    <h2>Systems</h2>
+</div>
+<div>
+	<a href="{{ path('system-new') }}" class="btn btn-default">Add new system</a>
+</div>
+<div>
+	<table class="table table-bordered">
+		<tr>
+			<th>Name</th>
+		</tr>
+		{% for system in systems %}
+		<tr>
+			<td>{{ system.name }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
