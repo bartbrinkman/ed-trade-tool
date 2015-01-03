@@ -43,7 +43,7 @@ class CommodityController extends Controller
             FROM AppBundle\Entity\Posting p
             WHERE p.commodity = :commodity
             AND p.buy > 0
-            ORDER BY p.buy DESC'
+            ORDER BY p.buy ASC'
         )->setParameter('commodity', $commodity);
         $supply = $query->getResult();
         return ['commodity' => $commodity, 'demand' => $demand, 'supply' => $supply];
