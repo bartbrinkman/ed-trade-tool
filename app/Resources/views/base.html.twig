@@ -25,11 +25,12 @@
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">ED: Trade Tool</a>
+					<a class="navbar-brand" href="{{ path('home') }}">ED: Trade Tool</a>
 				</div>
 				<div id="navbar" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="{% if app.request.attributes.get('_controller') == 'AppBundle:System:index' %}active{% endif %}"><a href="{{ path('system-index') }}">Systems</a></li>
+						<li class="{% if app.request.attributes.get('_route') == '' %}active{% endif %}{% if app.request.attributes.get('_route') == 'system-index' %}active{% endif %}"><a href="{{ path('system-index') }}">Systems</a></li>
+						<li class="{% if app.request.attributes.get('_route') == 'commodity-index' %}active{% endif %}"><a href="{{ path('commodity-index') }}">Commodities</a></li>
 						<li><a href="#about">About</a></li>
 						<li><a href="#contact">Contact</a></li>
 					</ul>
@@ -46,7 +47,7 @@
 			</div>
 			{% endfor %}
 			{% endfor %}
-			{% block body %}{% endblock %}
+			{% block body %}{% endblock %}			
 		</div><!-- /.container -->
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

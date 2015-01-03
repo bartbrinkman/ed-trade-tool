@@ -24,7 +24,8 @@ class System
 	protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="system")@Assert\NotBlank()
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="system")
+     * @Assert\NotBlank()
      */
     protected $stations;
 
@@ -55,7 +56,7 @@ class System
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -78,7 +79,7 @@ class System
     public function addStation(\AppBundle\Entity\Station $stations)
     {
         $this->stations[] = $stations;
-    
+
         return $this;
     }
 

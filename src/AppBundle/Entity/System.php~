@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -18,12 +19,20 @@ class System
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
      */
 	protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="system")
+     * @ORM\OneToMany(targetEntity="Station", mappedBy="system")@Assert\NotBlank()
      */
     protected $stations;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->stations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }

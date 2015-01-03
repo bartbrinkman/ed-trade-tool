@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class StationType extends AbstractType
+class CommodityType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,7 @@ class StationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('system', 'entity', ['class' => 'AppBundle\Entity\System', 'property' => 'name'])
-        ;
+            ->add('name');
     }
     
     /**
@@ -25,9 +23,7 @@ class StationType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Station'
-        ));
+        $resolver->setDefaults(['data_class' => 'AppBundle\Entity\Commodity']);
     }
 
     /**
@@ -35,6 +31,6 @@ class StationType extends AbstractType
      */
     public function getName()
     {
-        return 'station';
+        return 'commodity';
     }
 }

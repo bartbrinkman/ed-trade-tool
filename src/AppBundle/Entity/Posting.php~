@@ -1,0 +1,48 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ */
+class Posting
+{
+	/**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Commodity", inversedBy="postings")
+     */
+    protected $commodity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Station", inversedBy="postings")
+     */
+    protected $station;
+
+    /**
+     * @ORM\Column(type="decimal")
+     */
+    protected $sell;
+
+    /**
+     * @ORM\Column(type="decimal")
+     */
+    protected $buy;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $demand;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $supply;
+}

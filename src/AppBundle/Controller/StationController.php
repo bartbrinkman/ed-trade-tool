@@ -2,246 +2,103 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use AppBundle\Entity\Station;
+use AppBundle\Entity\System;
 use AppBundle\Form\StationType;
 
-/**
- * Station controller.
- *
- * @Route("/station")
- */
 class StationController extends Controller
 {
-
     /**
-     * Lists all Station entities.
-     *
-     * @Route("/", name="station")
-     * @Method("GET")
-     * @Template()
+     * @Route("/station", name="station-index")
+     * @Template("Station/index.html.twig")
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppBundle:Station')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
+        $repository = $this->getDoctrine()->getRepository('AppBundle\Entity\Station');
+        $stations = $repository->findAll();
+        return ['stations' => $stations];
     }
+
     /**
-     * Creates a new Station entity.
-     *
-     * @Route("/", name="station_create")
-     * @Method("POST")
-     * @Template("AppBundle:Station:new.html.twig")
+     * @Route("/station/{id}", name="station-show", requirements={"id": "\d+"})
+     * @Template("Station/show.html.twig")
      */
-    public function createAction(Request $request)
+    public function showAction(Station $station)
     {
-        $entity = new Station();
-        $form = $this->createCreateForm($entity);
+        return ['station' => $station];
+    }
+
+    /**
+     * @Route("/station/new/{system_id}", name="station-new", defaults={"system_id" = 0})
+     * @Template("Station/new.html.twig")
+     */
+    public function newAction(Request $request, $system_id)
+    {
+        $station = new Station();
+        $station->setSystem($this->findSystem($system_id));
+        $form = $this->createForm(new StationType, $station);
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($station);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('station_show', array('id' => $entity->getId())));
+            $request->getSession()->getFlashBag()->add('success', 'station added.');
+            return $this->redirect($this->generateUrl('station-show', [
+                'id' => $station->getId()
+            ]));
         }
 
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
+        return $this->render('station/new.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    protected function findSystem($id)
+    {
+        $repository = $this->getDoctrine()->getRepository('AppBundle\Entity\System');
+        $system = $repository->findOneById($id);
+        return $system;
     }
 
     /**
-     * Creates a form to create a Station entity.
-     *
-     * @param Station $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/station/{id}/edit", name="station-edit", requirements={"id": "\d+"})
+     * @Template("Station/edit.html.twig")
      */
-    private function createCreateForm(Station $entity)
+    public function editAction(Request $request, Station $station)
     {
-        $form = $this->createForm(new StationType(), $entity, array(
-            'action' => $this->generateUrl('station_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
-
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new Station entity.
-     *
-     * @Route("/new", name="station_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Station();
-        $form   = $this->createCreateForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Finds and displays a Station entity.
-     *
-     * @Route("/{id}", name="station_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AppBundle:Station')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Station entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to edit an existing Station entity.
-     *
-     * @Route("/{id}/edit", name="station_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AppBundle:Station')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Station entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-    * Creates a form to edit a Station entity.
-    *
-    * @param Station $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Station $entity)
-    {
-        $form = $this->createForm(new StationType(), $entity, array(
-            'action' => $this->generateUrl('station_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
-
-        return $form;
-    }
-    /**
-     * Edits an existing Station entity.
-     *
-     * @Route("/{id}", name="station_update")
-     * @Method("PUT")
-     * @Template("AppBundle:Station:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('AppBundle:Station')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Station entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('station_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-    /**
-     * Deletes a Station entity.
-     *
-     * @Route("/{id}", name="station_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
+        $form = $this->createForm(new StationType, $station);
         $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Station')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Station entity.');
-            }
-
-            $em->remove($entity);
+            $em->persist($station);
             $em->flush();
+
+            $request->getSession()->getFlashBag()->add('info', 'station saved.');
+            return $this->redirect($this->generateUrl('station-show', [
+                'id' => $station->getId()
+            ])); 
         }
 
-        return $this->redirect($this->generateUrl('station'));
+        return $this->render('station/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
-     * Creates a form to delete a Station entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/station/{id}/delete", name="station-delete", requirements={"id": "\d+"})
      */
-    private function createDeleteForm($id)
+    public function deleteAction(Request $request, Station $station)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('station_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($station);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('info', 'station deleted.');
+        return $this->redirect($this->generateUrl('station-index'));
     }
 }

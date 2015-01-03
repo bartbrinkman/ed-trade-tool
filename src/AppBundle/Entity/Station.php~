@@ -27,7 +27,14 @@ class Station
     protected $system;
 
     /**
-     * @ORM\OneToMany(targetEntity="Commodity", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="Posting", mappedBy="station")
      */
-    protected $commodities;
+    protected $postings;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->postings = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }

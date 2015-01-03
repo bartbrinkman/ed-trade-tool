@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 style="margin: 5px 0px;">
+            Commodities in {{ station.name }} ({{ station.system.name }} system)
+            <a href="{{ path('posting-new') }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add commodity posting</a>
+        </h3>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+        </tr>
+        {% for posting in station.postings %}
+        <tr>
+            <td><a href="{{ path('posting-edit', { 'id': posting.id }) }}">{{ posting.commodity.name }}</a></td>
+            <td>{{ posting.sell|number_format }}</td>
+            <td>{{ posting.buy|number_format }}</td>
+            <td>{{ posting.demand|number_format }}</td>
+            <td>{{ posting.supply|number_format }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

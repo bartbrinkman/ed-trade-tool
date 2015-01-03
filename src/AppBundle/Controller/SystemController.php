@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use AppBundle\Entity\System;
 use AppBundle\Form\SystemType;
@@ -13,28 +14,27 @@ class SystemController extends Controller
 {
     /**
      * @Route("/system", name="system-index")
+     * @Template("System/index.html.twig")
      */
     public function indexAction()
     {
     	$repository = $this->getDoctrine()->getRepository('AppBundle\Entity\System');
     	$systems = $repository->findAll();
-        return $this->render('system/index.html.twig', [
-            'systems' => $systems
-        ]);
+        return ['systems' => $systems];
     }
 
     /**
 	 * @Route("/system/{id}", name="system-show", requirements={"id": "\d+"})
+     * @Template("System/show.html.twig")
 	 */
 	public function showAction(System $system)
 	{
-	    return $this->render('system/show.html.twig', [
-	        'system' => $system,
-	    ]);
+	    return ['system' => $system];
 	}
 
     /**
      * @Route("/system/new", name="system-new")
+     * @Template("System/new.html.twig")
      */
     public function newAction(Request $request)
     {
@@ -59,6 +59,7 @@ class SystemController extends Controller
 
     /**
      * @Route("/system/{id}/edit", name="system-edit", requirements={"id": "\d+"})
+     * @Template("System/edit.html.twig")
      */
     public function editAction(Request $request, System $system)
     {
@@ -83,12 +84,12 @@ class SystemController extends Controller
     /**
      * @Route("/system/{id}/delete", name="system-delete", requirements={"id": "\d+"})
      */
-    public function deleteAction(System $system)
+    public function deleteAction(Request $request, System $system)
     {
-    	$em = $this->getDoctrine();
+    	$em = $this->getDoctrine()->getManager();
     	$em->remove($system);
-    	$em->flush;
+    	$em->flush();
         $request->getSession()->getFlashBag()->add('info', 'System deleted.');
-    	return $this->rediect($this->generateUrl('system-index'));
+    	return $this->redirect($this->generateUrl('system-index'));
     }
 }

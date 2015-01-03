@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 style="margin: 5px 0px;">
+			Commodities
+			<a href="{{ path('commodity-new') }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add new commodity</a>
+		</h3>
+	</div>
+	<table class="table table-bordered">
+		<tr>
+			<th>Name</th>
+		</tr>
+		{% for commodity in commodities %}
+		<tr>
+			<td><a href="{{ path('commodity-show', { 'id': commodity.id }) }}">{{ commodity.name }}</a><span class="badge pull-right">{{ commodity.postings|length }}</span></td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

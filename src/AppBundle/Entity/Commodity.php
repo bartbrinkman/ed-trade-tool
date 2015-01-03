@@ -22,19 +22,17 @@ class Commodity
 	protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="commodities")
+     * @ORM\OneToMany(targetEntity="Posting", mappedBy="commodity")
      */
-    protected $station;
-
+    protected $postings;
+    
     /**
-     * @ORM\Column(type="decimal")
+     * Constructor
      */
-    protected $buy;
-
-    /**
-     * @ORM\Column(type="decimal")
-     */
-    protected $sell;
+    public function __construct()
+    {
+        $this->postings = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -55,7 +53,7 @@ class Commodity
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -70,71 +68,35 @@ class Commodity
     }
 
     /**
-     * Set buy
+     * Add postings
      *
-     * @param string $buy
+     * @param \AppBundle\Entity\Posting $postings
      * @return Commodity
      */
-    public function setBuy($buy)
+    public function addPosting(\AppBundle\Entity\Posting $postings)
     {
-        $this->buy = $buy;
-    
+        $this->postings[] = $postings;
+
         return $this;
     }
 
     /**
-     * Get buy
+     * Remove postings
      *
-     * @return string 
+     * @param \AppBundle\Entity\Posting $postings
      */
-    public function getBuy()
+    public function removePosting(\AppBundle\Entity\Posting $postings)
     {
-        return $this->buy;
+        $this->postings->removeElement($postings);
     }
 
     /**
-     * Set sell
+     * Get postings
      *
-     * @param string $sell
-     * @return Commodity
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function setSell($sell)
+    public function getPostings()
     {
-        $this->sell = $sell;
-    
-        return $this;
-    }
-
-    /**
-     * Get sell
-     *
-     * @return string 
-     */
-    public function getSell()
-    {
-        return $this->sell;
-    }
-
-    /**
-     * Set station
-     *
-     * @param \AppBundle\Entity\Station $station
-     * @return Commodity
-     */
-    public function setStation(\AppBundle\Entity\Station $station = null)
-    {
-        $this->station = $station;
-    
-        return $this;
-    }
-
-    /**
-     * Get station
-     *
-     * @return \AppBundle\Entity\Station 
-     */
-    public function getStation()
-    {
-        return $this->station;
+        return $this->postings;
     }
 }

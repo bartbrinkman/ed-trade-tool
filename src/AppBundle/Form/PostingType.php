@@ -6,35 +6,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class StationType extends AbstractType
+class PostingType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('system', 'entity', ['class' => 'AppBundle\Entity\System', 'property' => 'name'])
+            ->add('commodity', 'entity', ['class' => 'AppBundle\Entity\Commodity', 'property' => 'name'])
+            ->add('station', 'entity', ['class' => 'AppBundle\Entity\Station', 'property' => 'name'])
+            ->add('sell')
+            ->add('buy')
+            ->add('demand')
+            ->add('supply')
         ;
     }
-    
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Station'
+            'data_class' => 'AppBundle\Entity\Posting'
         ));
     }
 
-    /**
-     * @return string
-     */
     public function getName()
     {
-        return 'station';
+        return 'posting';
     }
 }

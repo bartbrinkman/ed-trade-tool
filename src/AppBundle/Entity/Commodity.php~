@@ -22,50 +22,7 @@ class Commodity
 	protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Station", inversedBy="commodities")
+     * @ORM\OneToMany(targetEntity="Posting", mappedBy="commodity")
      */
-    protected $station;
-
-    /**
-     * @ORM\Column(type="decimal")
-     */
-    protected $buy;
-
-    /**
-     * @ORM\Column(type="decimal")
-     */
-    protected $sell;
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Commodity
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+    protected $postings;
 }

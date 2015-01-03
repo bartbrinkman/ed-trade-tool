@@ -27,15 +27,15 @@ class Station
     protected $system;
 
     /**
-     * @ORM\OneToMany(targetEntity="Commodity", mappedBy="station")
+     * @ORM\OneToMany(targetEntity="Posting", mappedBy="station")
      */
-    protected $commodities;
+    protected $postings;
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->commodities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postings = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -57,7 +57,7 @@ class Station
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -80,7 +80,7 @@ class Station
     public function setSystem(\AppBundle\Entity\System $system = null)
     {
         $this->system = $system;
-    
+
         return $this;
     }
 
@@ -95,35 +95,35 @@ class Station
     }
 
     /**
-     * Add commodities
+     * Add postings
      *
-     * @param \AppBundle\Entity\Commodity $commodities
+     * @param \AppBundle\Entity\Posting $postings
      * @return Station
      */
-    public function addCommodity(\AppBundle\Entity\Commodity $commodities)
+    public function addPosting(\AppBundle\Entity\Posting $postings)
     {
-        $this->commodities[] = $commodities;
-    
+        $this->postings[] = $postings;
+
         return $this;
     }
 
     /**
-     * Remove commodities
+     * Remove postings
      *
-     * @param \AppBundle\Entity\Commodity $commodities
+     * @param \AppBundle\Entity\Posting $postings
      */
-    public function removeCommodity(\AppBundle\Entity\Commodity $commodities)
+    public function removePosting(\AppBundle\Entity\Posting $postings)
     {
-        $this->commodities->removeElement($commodities);
+        $this->postings->removeElement($postings);
     }
 
     /**
-     * Get commodities
+     * Get postings
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCommodities()
+    public function getPostings()
     {
-        return $this->commodities;
+        return $this->postings;
     }
 }
