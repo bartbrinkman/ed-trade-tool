@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div>
-    <h2>Systems</h2>
-</div>
-<div>
-	<a href="{{ path('system-new') }}" class="btn btn-default">Add new system</a>
-</div>
-<div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 style="margin: 5px 0px;">
+			Systems
+			<a href="{{ path('system-new') }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add new system</a>
+		</h3>
+	</div>
 	<table class="table table-bordered">
 		<tr>
 			<th>Name</th>
+			<th></th>
 		</tr>
 		{% for system in systems %}
 		<tr>
-			<td>{{ system.name }}</td>
+			<td><a href="{{ path('system-show', { 'id': system.id }) }}">{{ system.name }}</a><span class="badge pull-right">{{ system.stations|length }}</span></td>
+			<td></td>
 		</tr>
 		{% endfor %}
 	</table>

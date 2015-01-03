@@ -16,7 +16,7 @@ class StationType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('system')
+            ->add('system', 'entity', ['class' => 'AppBundle\Entity\System', 'property' => 'name'])
         ;
     }
     

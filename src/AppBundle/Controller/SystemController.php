@@ -46,6 +46,7 @@ class SystemController extends Controller
     		$em->persist($system);
     		$em->flush();
 
+            $request->getSession()->getFlashBag()->add('success', 'System added.');
     		return $this->redirect($this->generateUrl('system-show', [
     			'id' => $system->getId()
     		]));
@@ -68,6 +69,7 @@ class SystemController extends Controller
     		$em->persist($system);
     		$em->flush();
 
+            $request->getSession()->getFlashBag()->add('info', 'System saved.');
     		return $this->redirect($this->generateUrl('system-show', [
     			'id' => $system->getId()
     		])); 
@@ -86,6 +88,7 @@ class SystemController extends Controller
     	$em = $this->getDoctrine();
     	$em->remove($system);
     	$em->flush;
+        $request->getSession()->getFlashBag()->add('info', 'System deleted.');
     	return $this->rediect($this->generateUrl('system-index'));
     }
 }

@@ -11,7 +11,7 @@
 		<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
 		<style type="text/css">
-			body { padding-top: 50px; }
+			body { padding-top: 70px; }
 		</style>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -38,6 +38,14 @@
 		</nav>
 
 		<div class="container">
+    		{% for type, all in app.session.flashbag.all %}
+    		{% for message in all %}
+			<div class="alert alert-{{ type }} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				{{ message }}
+			</div>
+			{% endfor %}
+			{% endfor %}
 			{% block body %}{% endblock %}
 		</div><!-- /.container -->
 
