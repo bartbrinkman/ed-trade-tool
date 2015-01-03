@@ -14,7 +14,7 @@
 		</tr>
 		{% for station in system.stations %}
 		<tr>
-			<td><a href="{{ path('station-show', { 'id': system.id }) }}">{{ station.name }}</a><span class="badge pull-right">{{ station.postings|length }}</span></td>
+			<td><a href="{{ path('station-show', { 'id': station.id }) }}">{{ station.name }}</a><span class="badge pull-right">{{ station.postings|length }}</span></td>
 		</tr>
 		{% endfor %}
 	</table>

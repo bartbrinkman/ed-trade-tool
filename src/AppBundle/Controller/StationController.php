@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use AppBundle\Entity\Station;
-use AppBundle\Entity\System;
 use AppBundle\Form\StationType;
 
 class StationController extends Controller
@@ -48,7 +47,7 @@ class StationController extends Controller
             $em->persist($station);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', 'station added.');
+            $request->getSession()->getFlashBag()->add('success', 'Station added.');
             return $this->redirect($this->generateUrl('station-show', [
                 'id' => $station->getId()
             ]));
@@ -79,7 +78,7 @@ class StationController extends Controller
             $em->persist($station);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', 'station saved.');
+            $request->getSession()->getFlashBag()->add('info', 'Station saved.');
             return $this->redirect($this->generateUrl('station-show', [
                 'id' => $station->getId()
             ])); 
@@ -98,7 +97,7 @@ class StationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($station);
         $em->flush();
-        $request->getSession()->getFlashBag()->add('info', 'station deleted.');
+        $request->getSession()->getFlashBag()->add('info', 'Station deleted.');
         return $this->redirect($this->generateUrl('station-index'));
     }
 }

@@ -29,14 +29,31 @@ class CommodityController extends Controller
      */
     public function showAction(Commodity $commodity)
     {
-        return ['commodity' => $commodity];
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            'SELECT p
+            FROM AppBundle\Entity\Posting p
+            WHERE p.commodity = :commodity
+            AND p.sell > 0
+            ORDER BY p.sell DESC'
+        )->setParameter('commodity', $commodity);
+        $demand = $query->getResult();
+        $query = $em->createQuery(
+            'SELECT p
+            FROM AppBundle\Entity\Posting p
+            WHERE p.commodity = :commodity
+            AND p.buy > 0
+            ORDER BY p.buy DESC'
+        )->setParameter('commodity', $commodity);
+        $supply = $query->getResult();
+        return ['commodity' => $commodity, 'demand' => $demand, 'supply' => $supply];
     }
 
     /**
      * @Route("/commodity/new", name="commodity-new")
      * @Template("Commodity/new.html.twig")
      */
-    public function newAction(Request $request, $station_id)
+    public function newAction(Request $request)
     {
         $commodity = new Commodity();
         $form = $this->createForm(new CommodityType, $commodity);
@@ -47,9 +64,7 @@ class CommodityController extends Controller
             $em->flush();
 
             $request->getSession()->getFlashBag()->add('success', 'Commodity added.');
-            return $this->redirect($this->generateUrl('commodity-show', [
-                'id' => $commodity->getId()
-            ]));
+            return $this->redirect($this->generateUrl('commodity-index'));
         }
 
         return ['form' => $form->createView()];

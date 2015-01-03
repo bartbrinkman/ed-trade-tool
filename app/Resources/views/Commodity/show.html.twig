@@ -4,4 +4,52 @@
 <div>
 	<h3>{{ commodity.name }}</h3>
 </div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 style="margin: 5px 0px;">
+			Demand for {{ commodity.name }}
+			<a href="{{ path('station-new') }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add new posting</a>
+		</h3>
+	</div>
+	<table class="table table-bordered">
+		<tr>
+			<th>Station</th>
+			<th>System</th>
+			<th>Buying</th>
+			<th>Demand</th>
+		</tr>
+		{% for posting in demand %}
+		<tr>
+			<td>{{ posting.station.name }}</td>
+			<td>{{ posting.station.system.name }}</td>
+			<td>{{ posting.sell|number_format }}</td>
+			<td>{{ posting.demand|number_format }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 style="margin: 5px 0px;">
+			Supply for {{ commodity.name }}
+			<a href="{{ path('station-new') }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add new posting</a>
+		</h3>
+	</div>
+	<table class="table table-bordered">
+		<tr>
+			<th>Station</th>
+			<th>System</th>
+			<th>Selling</th>
+			<th>Supply</th>
+		</tr>
+		{% for posting in supply %}
+		<tr>
+			<td>{{ posting.station.name }}</td>
+			<td>{{ posting.station.system.name }}</td>
+			<td>{{ posting.buy|number_format }}</td>
+			<td>{{ posting.supply|number_format }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
 {% endblock %}
