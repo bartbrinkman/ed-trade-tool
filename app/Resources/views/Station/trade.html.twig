@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 style="margin: 5px 0px;">
+            Opportunities in {{ station.name }} ({{ station.system.name }} system)
+            <a href="{{ path('posting-new', {'station_id': station.id}) }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add commodity posting</a>
+        </h3>
+    </div>
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Sell (to market)</th>
+            <th>Buy (from market)</th>
+            <th>Demand</th>
+            <th>Supply</th>
+        </tr>
+        {% for posting in station.postings %}
+        <tr>
+            <td><a href="{{ path('commodity-show', { 'id': posting.commodity.id }) }}">{{ posting.commodity.name }}</a></td>
+            <td>
+                {{ posting.sell|number_format }}
+                {% if trade[posting.commodity.id].supply %}
+                    <div style="font-size: 0.8em;">
+                        Buy for {{ trade[posting.commodity.id].supply.buy|number_format }} 
+                        from <a href="{{ path('station-show', {'id': trade[posting.commodity.id].supply.station.id}) }}">{{ trade[posting.commodity.id].supply.station.name }}</a> 
+                        for {{ (posting.sell - trade[posting.commodity.id].supply.buy)|number_format }} 
+                        profit per unit.
+                    </div>
+                {% endif %}
+            </td>
+            <td>
+                {{ posting.buy|number_format }}
+                {% if posting.buy > 0 and trade[posting.commodity.id].demand %}
+                    <div style="font-size: 0.8em;">
+                        Sell for {{ trade[posting.commodity.id].demand.sell|number_format }} 
+                        to <a href="{{ path('station-show', {'id': trade[posting.commodity.id].demand.station.id}) }}">{{ trade[posting.commodity.id].demand.station.name }}</a> 
+                        for {{ (trade[posting.commodity.id].demand.sell - posting.buy)|number_format }}  
+                        profit per unit.
+                    </div>
+                {% endif %}
+            </td>
+            <td>{{ posting.demand|number_format }}</td>
+            <td>{{ posting.supply|number_format }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

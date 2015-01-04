@@ -33,6 +33,51 @@ class StationController extends Controller
     }
 
     /**
+     * @Route("/station/{id}/trade", name="station-trade", requirements={"id": "\d+"})
+     * @Template("Station/trade.html.twig")
+     */
+    public function tradeAction(Station $station)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $trade = [];
+        foreach($station->getPostings() as $posting) {
+            $query = $em->createQuery(
+                'SELECT p
+                FROM AppBundle\Entity\Posting p
+                WHERE p.commodity = :commodity
+                AND p.buy < :posting 
+                AND p.buy > 0
+                AND p.station != :station
+                ORDER BY p.buy ASC'
+            )->setParameter('commodity', $posting->getCommodity())
+             ->setParameter('posting', $posting->getSell())
+             ->setParameter('station', $posting->getStation())
+             ->setMaxResults(1);
+            $supply = current($query->getResult());
+
+            $query = $em->createQuery(
+                'SELECT p
+                FROM AppBundle\Entity\Posting p
+                WHERE p.commodity = :commodity
+                AND p.sell > :posting
+                AND p.sell > 0
+                AND p.station != :station
+                ORDER BY p.sell DESC'
+            )->setParameter('commodity', $posting->getCommodity())
+             ->setParameter('posting', $posting->getBuy())
+             ->setParameter('station', $posting->getStation())
+             ->setMaxResults(1);
+            $demand = current($query->getResult());
+            
+            $trade[$posting->getCommodity()->getId()] = [
+                'supply' => $supply,
+                'demand' => $demand
+            ];
+        }
+        return ['station' => $station, 'trade' => $trade];
+    }
+
+    /**
      * @Route("/station/new/{system_id}", name="station-new", defaults={"system_id" = 0})
      * @Template("Station/new.html.twig")
      */

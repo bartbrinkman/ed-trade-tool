@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-   <div class="panel panel-default">
+<div class="panel panel-default">
     <div class="panel-heading">
         <h3 style="margin: 5px 0px;">
             Commodities in {{ station.name }} ({{ station.system.name }} system)
@@ -11,8 +11,8 @@
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
-            <th>Sell</th>
-            <th>Buy</th>
+            <th>Sell (to market)</th>
+            <th>Buy (from market)</th>
             <th>Demand</th>
             <th>Supply</th>
         </tr>
@@ -26,5 +26,8 @@
         </tr>
         {% endfor %}
     </table>
+</div>
+<div>
+    <a href="{{ path('station-trade', {'id': station.id}) }}" class="btn btn-default">Show trade opportunities</a>
 </div>
 {% endblock %}
