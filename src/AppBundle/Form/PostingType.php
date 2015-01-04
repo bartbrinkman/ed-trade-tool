@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Validator\Constraints\Type;
+
 class PostingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -13,10 +15,10 @@ class PostingType extends AbstractType
         $builder
             ->add('commodity', 'entity', ['class' => 'AppBundle\Entity\Commodity', 'property' => 'name'])
             ->add('station', 'entity', ['class' => 'AppBundle\Entity\Station', 'property' => 'name'])
-            ->add('sell')
-            ->add('buy')
-            ->add('demand')
-            ->add('supply')
+            ->add('sell', 'text', ['constraints' => [new Type('numeric')]])
+            ->add('buy', 'text')
+            ->add('demand', 'text')
+            ->add('supply', 'text')
         ;
     }
 

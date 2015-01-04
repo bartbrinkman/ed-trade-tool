@@ -32,6 +32,15 @@
 				background-color: #f5f5f5;
 				border-top: 1px solid rgba(0, 0, 0, 0.05);
 			}
+			form.inline {
+				width: 70px;
+			}
+			.inline input {
+				width: 70px;
+				margin: -2px;
+				border: 0;
+				padding: 2px;
+			}
 		</style>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -76,5 +85,6 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		{% block script %}{% endblock %}
 	</body>
 </html>

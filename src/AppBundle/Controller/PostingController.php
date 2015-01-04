@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use AppBundle\Entity\Posting;
@@ -93,6 +94,37 @@ class PostingController extends Controller
     	return $this->render('posting/edit.html.twig', [
     		'form' => $form->createView()
     	]);
+    }
+
+    /**
+     * @Route("/posting/patch/{id}", name="posting-patch", defaults={"id": 0})
+     */
+    public function patchAction(Request $request, Posting $posting)
+    {
+        $form = $this->createForm(new PostingType(), $posting, ['csrf_protection' => false]);
+        
+        foreach($form as $element) {
+            if (!isset($request->request->get('posting')[$element->getName()])) {
+                $form->remove($element->getName());
+            }
+        }
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($posting);
+            $em->flush();
+            return new JsonResponse([
+                'success' => true, 
+                'posting' => [
+                    'sell' => $posting->getSell(),
+                    'buy' => $posting->getBuy(),
+                    'demand' => $posting->getDemand(),
+                    'supply' => $posting->getSupply()
+                ]]);
+        }
+
+        return new JsonResponse(['success' => false, 'error' => $form->getErrorsAsString()]);
     }
 
     /**

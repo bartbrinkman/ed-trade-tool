@@ -14,18 +14,18 @@
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
-            <th>Sell (to market)</th>
-            <th>Buy (from market)</th>
-            <th>Demand</th>
-            <th>Supply</th>
+            <th width="15%">Sell (to market)</th>
+            <th width="15%">Buy (from market)</th>
+            <th width="15%">Demand</th>
+            <th width="15%">Supply</th>
         </tr>
         {% for posting in station.postings %}
         <tr id="{{ posting.id }}">
             <td><a href="{{ path('commodity-show', { 'id': posting.commodity.id }) }}">{{ posting.commodity.name }}</a></td>
-            <td class="sell"  >{{ posting.sell|number_format }}</td>
-            <td class="buy"   >{{ posting.buy|number_format }}</td>
-            <td class="demand">{{ posting.demand|number_format }}</td>
-            <td class="supply">{{ posting.supply|number_format }}</td>
+            <td class="edit" type="sell">{{ posting.sell|number_format }}</td>
+            <td class="edit" type="buy">{{ posting.buy|number_format }}</td>
+            <td class="edit" type="demand">{{ posting.demand|number_format }}</td>
+            <td class="edit" type="supply">{{ posting.supply|number_format }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -33,7 +33,43 @@
 <div class="text-center">
     <a href="{{ path('station-trade', {'id': station.id}) }}" class="btn btn-default">Show trade opportunities</a>
 </div>
+{% endblock %}
 
+{% block script %}
 <script type="text/javascript">
+    $(document).on('click', 'td.edit', function() {
+        $(this).removeClass('edit');
+        $(this).find('.glyphicon').remove();
+        var val = $(this).html().replace(',', '');
+        $(this).html('<form class="inline pull-left"><input type="text" name="posting[' + $(this).attr('type') + ']" value="' + val + '"></form>');
+        $(this).find('input').select(); 
+    });
+    $(document).on('submit', 'form.inline', function(event) {
+        event.preventDefault();
+        var val = $(this).find('input').val();
+        td = $(this).parent();
+        td.find('.glyphicon').remove();
+        wait = $('<span class="glyphicon glyphicon-time pull-right"></span>');
+        td.append(wait);
+        row = $(this).parent().parent();
+        var data = $(this).serialize();
+        $.post('{{ path('posting-patch') }}/' + td.parent().attr('id'), data, function(response) {
+            wait.remove();
+            if (response.success) {
+                td.addClass('edit');
+                row.find('td[type="sell"]').html(new Intl.NumberFormat('en-US').format(response.posting.sell)).addClass('edit');
+                row.find('td[type="buy"]').html(new Intl.NumberFormat('en-US').format(response.posting.buy)).addClass('edit');
+                row.find('td[type="demand"]').html(new Intl.NumberFormat('en-US').format(response.posting.demand)).addClass('edit');
+                row.find('td[type="supply"]').html(new Intl.NumberFormat('en-US').format(response.posting.supply)).addClass('edit');
+                icon = $('<span class="glyphicon glyphicon-ok pull-right" style="color: #3C763D;"></span>');
+                td.append(icon);
+                icon.fadeOut(1500);
+            } else {
+                icon = $('<span class="glyphicon glyphicon-remove pull-right" style="color: #A94442;"></span>');
+                td.append(icon);
+                alert(response.error);
+            }
+        });
+    });
 </script>
 {% endblock %}
