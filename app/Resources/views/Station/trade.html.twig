@@ -3,10 +3,10 @@
 {% block body %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 style="margin: 5px 0px;">
+        <h4 style="margin: 5px 0px;">
             Opportunities in {{ station.name }} ({{ station.system.name }} system)
-            <a href="{{ path('posting-new', {'station_id': station.id}) }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add commodity posting</a>
-        </h3>
+            <a href="{{ path('station-show', {'id': station.id}) }}" class="btn btn-default btn-sm pull-right" style="margin-top: -5px; margin-right: -5px;">Back to station</a>
+        </h4>
     </div>
     <table class="table table-bordered">
         <tr>

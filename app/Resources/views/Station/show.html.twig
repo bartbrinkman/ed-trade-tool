@@ -3,10 +3,13 @@
 {% block body %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 style="margin: 5px 0px;">
+        <h4 style="margin: 5px 0px;">
             Commodities in {{ station.name }} ({{ station.system.name }} system)
-            <a href="{{ path('posting-new', {'station_id': station.id}) }}" class="btn btn-primary btn-sm pull-right" style="margin-top: -2px; margin-right: -2px;">Add commodity posting</a>
-        </h3>
+            <div class="pull-right" style="margin-top: -5px; margin-right: -5px;">
+                <a href="{{ path('station-edit', {'id': station.id}) }}" class="btn btn-default btn-sm">Edit station</a>
+                <a href="{{ path('posting-new', {'station_id': station.id}) }}" class="btn btn-primary btn-sm">Add commodity posting</a>
+            </div>
+        </h4>
     </div>
     <table class="table table-bordered">
         <tr>
@@ -17,17 +20,20 @@
             <th>Supply</th>
         </tr>
         {% for posting in station.postings %}
-        <tr>
-            <td><a href="{{ path('posting-edit', { 'id': posting.id }) }}">{{ posting.commodity.name }}</a></td>
-            <td>{{ posting.sell|number_format }}</td>
-            <td>{{ posting.buy|number_format }}</td>
-            <td>{{ posting.demand|number_format }}</td>
-            <td>{{ posting.supply|number_format }}</td>
+        <tr id="{{ posting.id }}">
+            <td><a href="{{ path('commodity-show', { 'id': posting.commodity.id }) }}">{{ posting.commodity.name }}</a></td>
+            <td class="sell"  >{{ posting.sell|number_format }}</td>
+            <td class="buy"   >{{ posting.buy|number_format }}</td>
+            <td class="demand">{{ posting.demand|number_format }}</td>
+            <td class="supply">{{ posting.supply|number_format }}</td>
         </tr>
         {% endfor %}
     </table>
 </div>
-<div>
+<div class="text-center">
     <a href="{{ path('station-trade', {'id': station.id}) }}" class="btn btn-default">Show trade opportunities</a>
 </div>
+
+<script type="text/javascript">
+</script>
 {% endblock %}

@@ -1,16 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block body -%}
-    <h1>Station edit</h1>
-
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('station') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+{% block body %}
+    <h3>Edit station</h3>
+	{{ form_start(form) }}
+	    {{ form_widget(form) }}
+	    <input type="submit" value="Save" class="btn btn-primary" />
+	{{ form_end(form) }}
 {% endblock %}

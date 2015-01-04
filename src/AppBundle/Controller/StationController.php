@@ -129,9 +129,7 @@ class StationController extends Controller
             ])); 
         }
 
-        return $this->render('station/edit.html.twig', [
-            'form' => $form->createView()
-        ]);
+        return ['form' => $form->createView()];
     }
 
     /**
