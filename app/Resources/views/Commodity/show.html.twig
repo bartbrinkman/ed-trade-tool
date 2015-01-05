@@ -19,8 +19,8 @@
 		</tr>
 		{% for posting in demand %}
 		<tr>
-			<td>{{ posting.station.name }}</td>
-			<td>{{ posting.station.system.name }}</td>
+			<td><a href="{{ path('station-show', {'id': posting.station.id}) }}">{{ posting.station.name }}</a></td>
+			<td><a href="{{ path('system-show', {'id': posting.station.system.id}) }}">{{ posting.station.system.name }}</a></td>
 			<td>{{ posting.sell|number_format }}</td>
 			<td>{{ posting.demand|number_format }}</td>
 		</tr>
@@ -42,8 +42,8 @@
 		</tr>
 		{% for posting in supply %}
 		<tr>
-			<td>{{ posting.station.name }}</td>
-			<td>{{ posting.station.system.name }}</td>
+			<td><a href="{{ path('station-show', {'id': posting.station.id}) }}">{{ posting.station.name }}</a></td>
+			<td><a href="{{ path('system-show', {'id': posting.station.system.id}) }}">{{ posting.station.system.name }}</a></td>
 			<td>{{ posting.buy|number_format }}</td>
 			<td>{{ posting.supply|number_format }}</td>
 		</tr>
