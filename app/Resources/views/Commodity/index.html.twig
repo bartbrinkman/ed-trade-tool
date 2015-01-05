@@ -12,10 +12,15 @@
 		<tr>
 			<th>Name</th>
 		</tr>
-		{% for commodity in commodities %}
+		{% for category in categories %}
 		<tr>
-			<td><a href="{{ path('commodity-show', { 'id': commodity.id }) }}">{{ commodity.name }}</a><span class="badge pull-right">{{ commodity.postings|length }}</span></td>
+			<th>{{ category.name }}</th>
 		</tr>
+		{% for commodity in category.commodities %}
+		<tr>
+			<td style="padding-left: 30px;"><a href="{{ path('commodity-show', { 'id': commodity.id }) }}">{{ commodity.name }}</a><span class="badge pull-right">{{ commodity.postings|length }}</span></td>
+		</tr>
+		{% endfor %}
 		{% endfor %}
 	</table>
 </div>

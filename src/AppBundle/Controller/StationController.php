@@ -29,7 +29,21 @@ class StationController extends Controller
      */
     public function showAction(Station $station)
     {
-        return ['station' => $station];
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            'SELECT p, ct, c
+            FROM AppBundle\Entity\Posting p
+            JOIN p.commodity c
+            JOIN c.category ct
+            WHERE p.station = :station
+            ORDER BY ct.name ASC, c.name ASC'
+        )->setParameter('station', $station);
+        $result = $query->getResult();
+        $categories = [];
+        foreach($result as $posting) {
+            $categories[$posting->getCommodity()->getCategory()->getName()][] = $posting;
+        }
+        return ['station' => $station, 'categories' => $categories];
     }
 
     /**

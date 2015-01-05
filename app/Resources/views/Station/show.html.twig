@@ -19,14 +19,19 @@
             <th width="15%">Demand</th>
             <th width="15%">Supply</th>
         </tr>
-        {% for posting in station.postings %}
+        {% for name, postings in categories %}
+        <tr>
+            <th colspan="5">{{ name }}</th>
+        </tr>
+        {% for posting in postings %}
         <tr id="{{ posting.id }}">
-            <td><a href="{{ path('commodity-show', { 'id': posting.commodity.id }) }}">{{ posting.commodity.name }}</a></td>
+            <td style="padding-left: 30px;"><a href="{{ path('commodity-show', { 'id': posting.commodity.id }) }}">{{ posting.commodity.name }}</a></td>
             <td class="edit" type="sell">{{ posting.sell|number_format }}</td>
             <td class="edit" type="buy">{{ posting.buy|number_format }}</td>
             <td class="edit" type="demand">{{ posting.demand|number_format }}</td>
             <td class="edit" type="supply">{{ posting.supply|number_format }}</td>
         </tr>
+        {% endfor %}
         {% endfor %}
     </table>
 </div>

@@ -18,9 +18,15 @@ class CommodityController extends Controller
      */
     public function indexAction()
     {
-        $repository = $this->getDoctrine()->getRepository('AppBundle\Entity\Commodity');
-        $commodities = $repository->findAll();
-        return ['commodities' => $commodities];
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            'SELECT c, d
+            FROM AppBundle\Entity\Category c
+            JOIN c.commodities d
+            ORDER BY c.name ASC, d.name ASC'
+        );
+        $categories = $query->getResult();
+        return ['categories' => $categories];
     }
 
     /**
