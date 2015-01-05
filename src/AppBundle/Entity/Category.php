@@ -3,12 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  */
-class System
+class Category
 {
 	/**
      * @ORM\Column(type="integer")
@@ -19,22 +18,19 @@ class System
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
      */
 	protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Station", mappedBy="system")
-     * @Assert\NotBlank()
+     * @ORM\OneToMany(targetEntity="Commodity", mappedBy="category")
      */
-    protected $stations;
-
+    protected $commodities;
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->stations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->commodities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -51,7 +47,7 @@ class System
      * Set name
      *
      * @param string $name
-     * @return System
+     * @return Category
      */
     public function setName($name)
     {
@@ -71,35 +67,35 @@ class System
     }
 
     /**
-     * Add stations
+     * Add commodities
      *
-     * @param \AppBundle\Entity\Station $stations
-     * @return System
+     * @param \AppBundle\Entity\Commodity $commodities
+     * @return Category
      */
-    public function addStation(\AppBundle\Entity\Station $stations)
+    public function addCommodity(\AppBundle\Entity\Commodity $commodities)
     {
-        $this->stations[] = $stations;
+        $this->commodities[] = $commodities;
 
         return $this;
     }
 
     /**
-     * Remove stations
+     * Remove commodities
      *
-     * @param \AppBundle\Entity\Station $stations
+     * @param \AppBundle\Entity\Commodity $commodities
      */
-    public function removeStation(\AppBundle\Entity\Station $stations)
+    public function removeCommodity(\AppBundle\Entity\Commodity $commodities)
     {
-        $this->stations->removeElement($stations);
+        $this->commodities->removeElement($commodities);
     }
 
     /**
-     * Get stations
+     * Get commodities
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getStations()
+    public function getCommodities()
     {
-        return $this->stations;
+        return $this->commodities;
     }
 }

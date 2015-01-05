@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div>
+<div class="well">
+	<a href="{{ path('commodity-edit', {'id': commodity.id}) }}" class="btn btn-default pull-right">Edit commodity</a>
 	<h3>{{ commodity.name }}</h3>
+	<h4>{{ commodity.category.name }}</h4>
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">

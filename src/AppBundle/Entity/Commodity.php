@@ -22,6 +22,11 @@ class Commodity
 	protected $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="commodities")
+     */
+    protected $category;
+
+    /**
      * @ORM\OneToMany(targetEntity="Posting", mappedBy="commodity")
      */
     protected $postings;
@@ -98,5 +103,28 @@ class Commodity
     public function getPostings()
     {
         return $this->postings;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\Category $category
+     * @return Commodity
+     */
+    public function setCategory(\AppBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

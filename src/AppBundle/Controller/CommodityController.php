@@ -83,7 +83,7 @@ class CommodityController extends Controller
             $em->persist($commodity);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', 'commodity saved.');
+            $request->getSession()->getFlashBag()->add('info', 'Commodity saved.');
             return $this->redirect($this->generateUrl('commodity-show', [
                 'id' => $commodity->getId()
             ])); 
@@ -102,7 +102,7 @@ class CommodityController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->remove($commodity);
         $em->flush();
-        $request->getSession()->getFlashBag()->add('info', 'commodity deleted.');
+        $request->getSession()->getFlashBag()->add('info', 'Commodity deleted.');
         return $this->redirect($this->generateUrl('commodity-index'));
     }
 }

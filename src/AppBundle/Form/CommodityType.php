@@ -15,7 +15,9 @@ class CommodityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name');
+            ->add('name')
+            ->add('category', 'entity', ['class' => 'AppBundle\Entity\Category', 'property' => 'name'])
+        ;
     }
     
     /**
